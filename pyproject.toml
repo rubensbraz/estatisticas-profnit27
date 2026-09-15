@@ -1,0 +1,25 @@
+[project]
+name = "profnit-2027-stats"
+version = "0.1.0"
+description = "Statistical analysis and PDF report generator for PROFNIT 2027 preliminary entrance exam results."
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+    "pypdf>=5.0.0",
+    "pandas>=2.0.0",
+    "numpy>=1.24.0",
+    "matplotlib>=3.7.0",
+    "seaborn>=0.12.0",
+    "reportlab>=4.0.0",
+]
+
+[project.scripts]
+profnit-stats = "src.main:main"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src"]
+
