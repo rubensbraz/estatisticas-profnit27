@@ -29,6 +29,7 @@ CPF_REGION_MAP: Dict[int, str] = {
     9: "Paraná, Santa Catarina (PR/SC)",
 }
 
+
 CPF_REGION_SHORT_MAP: Dict[int, str] = {
     0: "RS",
     1: "DF/GO/MT/MS/TO",

@@ -16,7 +16,6 @@ from reportlab.pdfgen import canvas
 from reportlab.platypus import (
     HRFlowable,
     Image,
-    KeepTogether,
     PageBreak,
     Paragraph,
     SimpleDocTemplate,
@@ -31,7 +30,7 @@ logger = logging.getLogger(__name__)
 
 
 class NumberedCanvas(canvas.Canvas):
-    """Canvas implementation for multi-pass page numbering ('Page X of Y')."""
+    """Canvas implementation for multi-pass page numbering ('Página X de Y')."""
 
     def __init__(self, *args, **kwargs) -> None:
         """Initialize canvas with page record list."""
@@ -52,7 +51,6 @@ class NumberedCanvas(canvas.Canvas):
             canvas.Canvas.showPage(self)
         canvas.Canvas.save(self)
 
-
     def draw_page_number(self, page_count: int) -> None:
         """Draw running headers and footers.
 
@@ -69,19 +67,19 @@ class NumberedCanvas(canvas.Canvas):
         self.line(36, 36, letter[0] - 36, 36)
 
         # Footer content
-        footer_text = "PROFNIT 2027 Entrance Exam (ENA27) - Preliminary Results Statistical Report"
-        page_str = f"Page {self._pageNumber} of {page_count}"
+        footer_text = "PROFNIT 2027 - Exame Nacional de Acesso (ENA27) - Relatório Estatístico do Resultado Preliminar"
+        page_str = f"Página {self._pageNumber} de {page_count}"
 
         self.drawString(36, 24, footer_text)
         self.drawRightString(letter[0] - 36, 24, page_str)
 
         # Running header for pages > 1
         if self._pageNumber > 1:
-            self.drawString(36, letter[1] - 25, "PROFNIT 2027 - Executive Statistical Report")
+            self.drawString(36, letter[1] - 25, "PROFNIT 2027 - Relatório Estatístico Executivo")
             self.drawRightString(
                 letter[0] - 36,
                 letter[1] - 25,
-                datetime.now().strftime("%Y-%m-%d"),
+                datetime.now().strftime("%d/%m/%Y"),
             )
             self.line(36, letter[1] - 30, letter[0] - 36, letter[1] - 30)
 
@@ -103,15 +101,14 @@ class PDFReportGenerator:
 
     def _init_styles(self) -> None:
         """Initialize custom paragraph styles for document."""
-
         self.styles = getSampleStyleSheet()
 
         self.title_style = ParagraphStyle(
             "DocTitle",
             parent=self.styles["Heading1"],
             fontName="Helvetica-Bold",
-            fontSize=20,
-            leading=24,
+            fontSize=19,
+            leading=23,
             textColor=colors.HexColor("#0F172A"),
             spaceAfter=4,
         )
@@ -130,10 +127,10 @@ class PDFReportGenerator:
             "SectionH1",
             parent=self.styles["Heading2"],
             fontName="Helvetica-Bold",
-            fontSize=13,
-            leading=16,
+            fontSize=12.5,
+            leading=15,
             textColor=colors.HexColor("#1E293B"),
-            spaceBefore=14,
+            spaceBefore=12,
             spaceAfter=8,
             keepWithNext=True,
         )
@@ -229,13 +226,13 @@ class PDFReportGenerator:
         # 1. Document Header
         story.append(
             Paragraph(
-                "PROFNIT 2027 Entrance Exam (ENA27)",
+                "PROFNIT 2027 - Exame Nacional de Acesso (ENA27)",
                 self.title_style,
             )
         )
         story.append(
             Paragraph(
-                "Executive Statistical Report - Stage 1 National Examination Preliminary Results",
+                "Relatório Estatístico Executivo - Resultado Preliminar da Etapa 1 (Prova Nacional)",
                 self.subtitle_style,
             )
         )
@@ -247,12 +244,12 @@ class PDFReportGenerator:
         story.append(Spacer(1, 15))
 
         # 3. Attendance & General Performance Overview
-        story.append(Paragraph("1. General Attendance & Descriptive Performance", self.h1_style))
+        story.append(Paragraph("1. Frequência Geral de Presença e Desempenho Descritivo", self.h1_style))
         story.append(
             Paragraph(
-                "The preliminary results cover a total of <b>1,845 candidates</b> registered for the Stage 1 "
-                "National Examination (ENA27). Out of these, <b>1,749 candidates</b> took the exam, establishing an "
-                "attendance rate of <b>94.80%</b>. The overall mean score achieved by present candidates is <b>18.03 out of 20</b>.",
+                "O resultado preliminar contempla um total de <b>1.845 candidatos</b> inscritos para a Etapa 1 da Prova Nacional "
+                "do ENA27. Desses, <b>1.749 candidatos</b> realizaram a prova, estabelecendo uma taxa de presença de <b>94,80%</b>. "
+                "A média geral de acertos entre os candidatos presentes foi de <b>18,03 pontos (de um total de 20)</b>.",
                 self.body_style,
             )
         )
@@ -270,12 +267,12 @@ class PDFReportGenerator:
         story.append(PageBreak())
 
         # 4. Score Thresholds & Frequency Distribution
-        story.append(Paragraph("2. Score Frequency & Cutoff Percentiles", self.h1_style))
+        story.append(Paragraph("2. Distribuição de Notas e Percentuais de Corte", self.h1_style))
         story.append(
             Paragraph(
-                "Candidate performance displays high concentration at top scores. A total of <b>918 candidates (52.49%)</b> "
-                "scored a perfect 20 out of 20. Furthermore, <b>76.44%</b> scored 18 or above, and <b>86.68%</b> reached or "
-                "exceeded 15 points. The detailed score breakdown is listed below:",
+                "O desempenho dos candidatos demonstra alta concentração nas notas superiores. Um total de <b>918 candidatos (52,49%)</b> "
+                "obteve a pontuação máxima de 20 acertos. Além disso, <b>76,44%</b> obtiveram nota igual ou superior a 18, e <b>86,68%</b> "
+                "alcançaram no mínimo 15 pontos. A tabela detalhada abaixo apresenta a frequência de cada nota:",
                 self.body_style,
             )
         )
@@ -292,12 +289,12 @@ class PDFReportGenerator:
         story.append(PageBreak())
 
         # 5. Regional Demographics (CPF State Code)
-        story.append(Paragraph("3. Geographic Demographics by CPF State Code", self.h1_style))
+        story.append(Paragraph("3. Demografia Geográfica por Código de Estado do CPF", self.h1_style))
         story.append(
             Paragraph(
-                "Using the 9th digit of candidate CPFs (the state issuing jurisdiction code), we map candidates across Brazilian "
-                "administrative regions. Region 2 (AC/AM/AP/PA/RO/RR) represented the highest candidate volume (425 candidates), "
-                "followed by Region 1 (DF/GO/MT/MS/TO) with 306 candidates.",
+                "Através do 9º dígito do CPF dos candidatos (código de jurisdição do estado emissor), mapeamos os candidatos entre as "
+                "regiões administrativas brasileiras. A Região 2 (AC/AM/AP/PA/RO/RR) registrou o maior volume de inscritos (425 candidatos), "
+                "seguida pela Região 1 (DF/GO/MT/MS/TO) com 306 candidatos.",
                 self.body_style,
             )
         )
@@ -314,7 +311,6 @@ class PDFReportGenerator:
         if "regional_means" in chart_paths:
             img_path = chart_paths["regional_means"]
             story.append(Image(str(img_path), width=480, height=180))
-
 
         doc.build(story, canvasmaker=NumberedCanvas)
         logger.info("PDF generation complete: %s", self.output_path)
@@ -334,27 +330,27 @@ class PDFReportGenerator:
         thresh = results.thresholds
 
         card1 = [
-            Paragraph("TOTAL CANDIDATES", self.kpi_title_style),
+            Paragraph("TOTAL DE INSCRITOS", self.kpi_title_style),
             Paragraph(f"{att.total_candidates:,}", self.kpi_value_style),
-            Paragraph(f"{att.present_candidates:,} Present ({att.attendance_rate_pct:.1f}%)", self.kpi_sub_style),
+            Paragraph(f"{att.present_candidates:,} Presentes ({att.attendance_rate_pct:.1f}%)", self.kpi_sub_style),
         ]
 
         card2 = [
-            Paragraph("ATTENDANCE RATE", self.kpi_title_style),
+            Paragraph("TAXA DE PRESENÇA", self.kpi_title_style),
             Paragraph(f"{att.attendance_rate_pct:.1f}%", self.kpi_value_style),
-            Paragraph(f"{att.absent_candidates:,} Absent ({att.absence_rate_pct:.1f}%)", self.kpi_sub_style),
+            Paragraph(f"{att.absent_candidates:,} Ausentes ({att.absence_rate_pct:.1f}%)", self.kpi_sub_style),
         ]
 
         card3 = [
-            Paragraph("NATIONAL MEAN SCORE", self.kpi_title_style),
+            Paragraph("MÉDIA NACIONAL", self.kpi_title_style),
             Paragraph(f"{desc.mean:.2f} / 20", self.kpi_value_style),
-            Paragraph(f"Median: {desc.median:.1f} | Std: {desc.std_dev:.2f}", self.kpi_sub_style),
+            Paragraph(f"Mediana: {desc.median:.1f} | Desvio: {desc.std_dev:.2f}", self.kpi_sub_style),
         ]
 
         card4 = [
-            Paragraph("PERFECT SCORES (20/20)", self.kpi_title_style),
+            Paragraph("NOTAS MÁXIMAS (20/20)", self.kpi_title_style),
             Paragraph(f"{thresh.perfect_scores_20:,}", self.kpi_value_style),
-            Paragraph(f"{thresh.perfect_scores_pct:.1f}% of Present Candidates", self.kpi_sub_style),
+            Paragraph(f"{thresh.perfect_scores_pct:.1f}% dos Presentes", self.kpi_sub_style),
         ]
 
         data = [[card1, card2, card3, card4]]
@@ -388,54 +384,54 @@ class PDFReportGenerator:
         t = results.thresholds
 
         header = [
-            Paragraph("Metric", self.tbl_header_style),
-            Paragraph("Value", self.tbl_header_style),
-            Paragraph("Metric", self.tbl_header_style),
-            Paragraph("Value", self.tbl_header_style),
+            Paragraph("Métrica", self.tbl_header_style),
+            Paragraph("Valor", self.tbl_header_style),
+            Paragraph("Métrica", self.tbl_header_style),
+            Paragraph("Valor", self.tbl_header_style),
         ]
 
         rows = [
             header,
             [
-                Paragraph("Total Candidates Registered", self.tbl_cell_style),
+                Paragraph("Total de Candidatos Inscritos", self.tbl_cell_style),
                 Paragraph(f"{att.total_candidates:,}", self.tbl_cell_center),
-                Paragraph("Mean Score (Out of 20)", self.tbl_cell_style),
+                Paragraph("Média de Acertos (de 20)", self.tbl_cell_style),
                 Paragraph(f"{desc.mean:.2f}", self.tbl_cell_center),
             ],
             [
-                Paragraph("Present Candidates", self.tbl_cell_style),
+                Paragraph("Candidatos Presentes", self.tbl_cell_style),
                 Paragraph(f"{att.present_candidates:,} ({att.attendance_rate_pct:.1f}%)", self.tbl_cell_center),
-                Paragraph("Median Score", self.tbl_cell_style),
+                Paragraph("Mediana de Acertos", self.tbl_cell_style),
                 Paragraph(f"{desc.median:.2f}", self.tbl_cell_center),
             ],
             [
-                Paragraph("Absent Candidates", self.tbl_cell_style),
+                Paragraph("Candidatos Ausentes", self.tbl_cell_style),
                 Paragraph(f"{att.absent_candidates:,} ({att.absence_rate_pct:.1f}%)", self.tbl_cell_center),
-                Paragraph("Mode Score", self.tbl_cell_style),
+                Paragraph("Moda de Acertos", self.tbl_cell_style),
                 Paragraph(f"{desc.mode:.2f}", self.tbl_cell_center),
             ],
             [
-                Paragraph("Perfect Scores (20/20)", self.tbl_cell_style),
+                Paragraph("Notas Máximas (20/20)", self.tbl_cell_style),
                 Paragraph(f"{t.perfect_scores_20:,} ({t.perfect_scores_pct:.1f}%)", self.tbl_cell_center),
-                Paragraph("Standard Deviation", self.tbl_cell_style),
+                Paragraph("Desvio Padrão", self.tbl_cell_style),
                 Paragraph(f"{desc.std_dev:.2f}", self.tbl_cell_center),
             ],
             [
-                Paragraph("High Scores (>= 18)", self.tbl_cell_style),
+                Paragraph("Desempenho Alto (>= 18)", self.tbl_cell_style),
                 Paragraph(f"{t.high_scores_18_to_20:,} ({t.high_scores_pct:.1f}%)", self.tbl_cell_center),
-                Paragraph("Variance", self.tbl_cell_style),
+                Paragraph("Variância", self.tbl_cell_style),
                 Paragraph(f"{desc.variance:.2f}", self.tbl_cell_center),
             ],
             [
-                Paragraph("Passing Grade (>= 15)", self.tbl_cell_style),
+                Paragraph("Nota de Aprovado (>= 15)", self.tbl_cell_style),
                 Paragraph(f"{t.passing_scores_15_plus:,} ({t.passing_scores_pct:.1f}%)", self.tbl_cell_center),
-                Paragraph("25th Percentile (Q1)", self.tbl_cell_style),
+                Paragraph("Percentil 25 (Q1)", self.tbl_cell_style),
                 Paragraph(f"{desc.q1_25pct:.2f}", self.tbl_cell_center),
             ],
             [
-                Paragraph("Low Scores (< 10)", self.tbl_cell_style),
+                Paragraph("Desempenho Baixo (< 10)", self.tbl_cell_style),
                 Paragraph(f"{t.low_scores_under_10:,} ({t.low_scores_pct:.1f}%)", self.tbl_cell_center),
-                Paragraph("75th Percentile (Q3)", self.tbl_cell_style),
+                Paragraph("Percentil 75 (Q3)", self.tbl_cell_style),
                 Paragraph(f"{desc.q3_75pct:.2f}", self.tbl_cell_center),
             ],
         ]
@@ -465,20 +461,15 @@ class PDFReportGenerator:
             ReportLab Table object.
         """
         header = [
-            Paragraph("Score", self.tbl_header_style),
-            Paragraph("Candidates Count", self.tbl_header_style),
-            Paragraph("Percentage (%)", self.tbl_header_style),
-            Paragraph("Cumulative Count", self.tbl_header_style),
-            Paragraph("Cumulative %", self.tbl_header_style),
+            Paragraph("Nota (Acertos)", self.tbl_header_style),
+            Paragraph("Qtd. Candidatos", self.tbl_header_style),
+            Paragraph("Percentual (%)", self.tbl_header_style),
+            Paragraph("Qtd. Acumulada", self.tbl_header_style),
+            Paragraph("Percentual Acumulado (%)", self.tbl_header_style),
         ]
 
         rows = [header]
         for row in results.score_frequencies:
-            # Highlight top scores
-            cell_bg = colors.white
-            if row.score == 20:
-                cell_bg = colors.HexColor("#EFF6FF")
-
             rows.append(
                 [
                     Paragraph(f"<b>{row.score}</b>", self.tbl_cell_center),
@@ -489,7 +480,7 @@ class PDFReportGenerator:
                 ]
             )
 
-        tbl = Table(rows, colWidths=[65, 110, 110, 115, 110])
+        tbl = Table(rows, colWidths=[80, 100, 105, 105, 120])
         tbl.setStyle(
             TableStyle(
                 [
@@ -514,20 +505,20 @@ class PDFReportGenerator:
             ReportLab Table object.
         """
         header = [
-            Paragraph("CPF Code", self.tbl_header_style),
-            Paragraph("Region / States Included", self.tbl_header_style),
+            Paragraph("Dígito CPF", self.tbl_header_style),
+            Paragraph("Região / Estados Incluídos", self.tbl_header_style),
             Paragraph("Total Reg.", self.tbl_header_style),
-            Paragraph("Present", self.tbl_header_style),
-            Paragraph("Absent", self.tbl_header_style),
-            Paragraph("Mean Score", self.tbl_header_style),
-            Paragraph("20/20 Count", self.tbl_header_style),
+            Paragraph("Presentes", self.tbl_header_style),
+            Paragraph("Ausentes", self.tbl_header_style),
+            Paragraph("Média Acertos", self.tbl_header_style),
+            Paragraph("Qtd. 20/20", self.tbl_header_style),
         ]
 
         rows = [header]
         for reg in results.regional_breakdown:
             rows.append(
                 [
-                    Paragraph(f"<b>Digit {reg.digit}</b>", self.tbl_cell_center),
+                    Paragraph(f"<b>Dígito {reg.digit}</b>", self.tbl_cell_center),
                     Paragraph(reg.region_name, self.tbl_cell_style),
                     Paragraph(f"{reg.total_candidates:,}", self.tbl_cell_center),
                     Paragraph(f"{reg.present_candidates:,}", self.tbl_cell_center),
@@ -537,7 +528,7 @@ class PDFReportGenerator:
                 ]
             )
 
-        tbl = Table(rows, colWidths=[55, 200, 50, 50, 45, 60, 60])
+        tbl = Table(rows, colWidths=[60, 195, 50, 50, 45, 60, 50])
         tbl.setStyle(
             TableStyle(
                 [

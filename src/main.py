@@ -30,28 +30,28 @@ def main() -> int:
         Exit code (0 for success, 1 for failure).
     """
     parser = argparse.ArgumentParser(
-        description="PROFNIT 2027 Entrance Exam (ENA27) Statistical Analysis & PDF Generator"
+        description="PROFNIT 2027 Exame Nacional de Acesso (ENA27) - Análise Estatística & Gerador de PDF"
     )
     parser.add_argument(
         "--input",
         "-i",
         type=str,
         default="data/ENA27-Resultado-Preliminar-Prova-Nacional.pdf",
-        help="Path to preliminary results PDF file.",
+        help="Caminho para o arquivo PDF com o resultado preliminar.",
     )
     parser.add_argument(
         "--output-pdf",
         "-o",
         type=str,
         default="output/PROFNIT_2027_Preliminary_Results_Report.pdf",
-        help="Path where output PDF report will be saved.",
+        help="Caminho onde o relatório PDF será salvo.",
     )
     parser.add_argument(
         "--charts-dir",
         "-c",
         type=str,
         default="output/charts",
-        help="Directory path to save generated chart PNG images.",
+        help="Diretório onde os gráficos PNG serão salvos.",
     )
 
     args = parser.parse_args()
@@ -61,54 +61,54 @@ def main() -> int:
     charts_dir = Path(args.charts_dir)
 
     print("=" * 70)
-    print("  PROFNIT 2027 Entrance Exam (ENA27) - Preliminary Results Analyzer")
+    print("  PROFNIT 2027 - Exame Nacional de Acesso (ENA27) - Análise Estatística")
     print("=" * 70)
 
     try:
         # Step 1: Parse PDF Document
-        logger.info("Step 1/4: Parsing PDF results file...")
+        logger.info("Etapa 1/4: Extraindo dados do arquivo PDF...")
         pdf_parser = PDFParser(input_path)
         records = pdf_parser.parse()
-        logger.info("Successfully extracted %d candidate records.", len(records))
+        logger.info("Extraídos %d registros de candidatos com sucesso.", len(records))
 
         # Step 2: Compute Statistical Metrics
-        logger.info("Step 2/4: Computing statistical metrics and CPF state mapping...")
+        logger.info("Etapa 2/4: Calculando estatísticas e mapeamento por região de CPF...")
         analyzer = StatisticalAnalyzer(records)
         results = analyzer.analyze()
 
         print("\n" + "-" * 70)
-        print("  KEY SUMMARY METRICS")
+        print("  MÉTRICAS PRINCIPAIS DE DESEMPENHO")
         print("-" * 70)
-        print(f"  • Total Candidates Registered:  {results.attendance.total_candidates:,}")
-        print(f"  • Present Candidates:           {results.attendance.present_candidates:,} ({results.attendance.attendance_rate_pct:.2f}%)")
-        print(f"  • Absent Candidates:            {results.attendance.absent_candidates:,} ({results.attendance.absence_rate_pct:.2f}%)")
-        print(f"  • National Mean Score:          {results.descriptive.mean:.2f} / 20.00")
-        print(f"  • National Median Score:        {results.descriptive.median:.2f} / 20.00")
-        print(f"  • Perfect Scores (20/20):       {results.thresholds.perfect_scores_20:,} ({results.thresholds.perfect_scores_pct:.2f}%)")
-        print(f"  • High Scores (>= 18):          {results.thresholds.high_scores_18_to_20:,} ({results.thresholds.high_scores_pct:.2f}%)")
-        print(f"  • Passing Grade (>= 15):        {results.thresholds.passing_scores_15_plus:,} ({results.thresholds.passing_scores_pct:.2f}%)")
+        print(f"  • Total de Candidatos Inscritos:  {results.attendance.total_candidates:,}")
+        print(f"  • Candidatos Presentes:           {results.attendance.present_candidates:,} ({results.attendance.attendance_rate_pct:.2f}%)")
+        print(f"  • Candidatos Ausentes:            {results.attendance.absent_candidates:,} ({results.attendance.absence_rate_pct:.2f}%)")
+        print(f"  • Média Nacional de Acertos:      {results.descriptive.mean:.2f} / 20,00")
+        print(f"  • Mediana Nacional de Acertos:    {results.descriptive.median:.2f} / 20,00")
+        print(f"  • Gabaritaram (20/20):            {results.thresholds.perfect_scores_20:,} ({results.thresholds.perfect_scores_pct:.2f}%)")
+        print(f"  • Desempenho Alto (>= 18):        {results.thresholds.high_scores_18_to_20:,} ({results.thresholds.high_scores_pct:.2f}%)")
+        print(f"  • Nota de Aprovado (>= 15):       {results.thresholds.passing_scores_15_plus:,} ({results.thresholds.passing_scores_pct:.2f}%)")
         print("-" * 70 + "\n")
 
         # Step 3: Generate Visual Charts
-        logger.info("Step 3/4: Generating high-resolution charts...")
+        logger.info("Etapa 3/4: Gerando gráficos em alta resolução...")
         chart_gen = ChartGenerator(charts_dir)
         chart_paths = chart_gen.generate_all_charts(results)
         for key, path in chart_paths.items():
-            logger.info("Generated chart [%s]: %s", key, path)
+            logger.info("Gráfico gerado [%s]: %s", key, path)
 
         # Step 4: Build PDF Report
-        logger.info("Step 4/4: Building publication-quality PDF report...")
+        logger.info("Etapa 4/4: Construindo relatório executivo em PDF...")
         pdf_gen = PDFReportGenerator(output_pdf_path)
         final_pdf_path = pdf_gen.generate(results, chart_paths)
 
         print("=" * 70)
-        print(f"  SUCCESS! Executive PDF report generated at:")
+        print(f"  SUCESSO! Relatório em PDF gerado em:")
         print(f"  --> {final_pdf_path.resolve()}")
         print("=" * 70 + "\n")
         return 0
 
     except Exception as exc:
-        logger.error("Execution failed: %s", exc, exc_info=True)
+        logger.error("Falha na execução: %s", exc, exc_info=True)
         return 1
 
 

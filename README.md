@@ -1,31 +1,31 @@
-# PROFNIT 2027 Entrance Exam (ENA27) - Statistical Analysis & PDF Generator
+# PROFNIT 2027 - Exame Nacional de Acesso (ENA27) - Análise Estatística & Gerador de PDF
 
-A Python package managed with `uv` for parsing, analyzing, visualizing, and generating executive PDF reports for the PROFNIT 2027 Preliminary Entrance Exam results (`data/ENA27-Resultado-Preliminar-Prova-Nacional.pdf`).
+Projeto em Python gerenciado com `uv` para extração de dados, análise estatística descritiva, geração de gráficos e compilação de relatórios executivos em PDF sobre o Resultado Preliminar do Exame Nacional de Acesso ao PROFNIT 2027 (`data/ENA27-Resultado-Preliminar-Prova-Nacional.pdf`).
 
-All source code, functions, variable names, docstrings, and comments are written strictly in English with static type annotations.
-
----
-
-## Key Features
-
-- **PDF Data Extraction**: Clean parsing of candidate names, masked CPFs, and attendance/scores across 57 document pages.
-- **Comprehensive Statistics**:
-  - **Attendance**: Total, present, absent counts and percentages.
-  - **Descriptive Metrics**: Mean, median, mode, standard deviation, variance, min, max, quartiles (Q1, Q3), and interquartile range (IQR).
-  - **Score Cutoffs**: Score frequencies (0–20), cumulative percentiles, high-scorer counts.
-  - **Geographic Breakdown**: Candidate distributions and average performance grouped by CPF issuing state code (9th digit).
-- **High-Resolution Visualizations**: Matplotlib/Seaborn plots (Score distribution histogram, cumulative distribution curve, regional candidate volume, regional mean scores).
-- **Executive PDF Report**: A 3-page publication-quality ReportLab document featuring KPI metric cards, formatted data tables, dynamic page numbering ("Page X of Y"), and embedded charts.
+O código-fonte em Python é estruturado de forma limpa, com docstrings e type hints detalhados.
 
 ---
 
-## Requirements & Environment Management
+## 🚀 Principais Funcionalidades
 
-This project uses [`uv`](https://github.com/astral-sh/uv) for fast, reproducible Python environment management.
+- **Extração de Dados em PDF**: Leitura e parsing de nomes, CPFs mascarados, presenças e notas de 1.845 candidatos ao longo de 57 páginas.
+- **Estatísticas Completas**:
+  - **Frequência de Presença**: Total de inscritos, presentes, ausentes e respectivas porcentagens.
+  - **Métricas Descritivas**: Média, mediana, moda, desvio padrão, variância, nota mínima, nota máxima, percentis (Q1, Q3) e intervalo interquartil (IQR).
+  - **Cortes de Nota**: Distribuição de notas (0 a 20), percentuais acumulados e volume de candidatos de alto desempenho.
+  - **Demografia Geográfica**: Agrupamento por código de estado do CPF (9º dígito), detalhando volume de candidatos e média de acertos por região.
+- **Gráficos em Alta Resolução**: Visualizações geradas com Matplotlib e Seaborn (histograma de acertos, curva de porcentagem acumulada, volume por região e média por região).
+- **Relatório Executivo em PDF**: Documento profissional em PDF estruturado com ReportLab (3 páginas), incluindo cards KPI, tabelas formatadas, numeração dinâmica de páginas ("Página X de Y") e gráficos integrados.
 
-### Installation
+---
 
-Clone the repository and install dependencies with `uv`:
+## 🛠️ Requisitos e Gerenciamento de Ambiente
+
+O projeto utiliza o [`uv`](https://github.com/astral-sh/uv) para gerenciamento rápido e reprodutível do ambiente Python.
+
+### Instalação das Dependências
+
+Para sincronizar o ambiente e instalar dependências:
 
 ```bash
 uv sync
@@ -33,36 +33,36 @@ uv sync
 
 ---
 
-## Usage
+## 💻 Como Usar
 
-### Run Default Analysis Pipeline
+### Executar Pipeline Completo
 
-To run the pipeline on the preliminary result document in `data/`:
+Para rodar a análise e gerar o relatório em PDF com as configurações padrão:
 
 ```bash
 uv run profnit-stats
 ```
 
-Or execute directly via python module:
+Ou diretamente via módulo Python:
 
 ```bash
 uv run python -m src.main
 ```
 
-### Custom Options
+### Opções Personalizadas
 
-You can specify custom input PDF paths or output directories:
+É possível especificar caminhos customizados de entrada e saída:
 
 ```bash
-uv run profnit-stats -i data/ENA27-Resultado-Preliminar-Prova-Nacional.pdf -o output/Report.pdf -c output/charts
+uv run profnit-stats -i data/ENA27-Resultado-Preliminar-Prova-Nacional.pdf -o output/Relatorio.pdf -c output/charts
 ```
 
 ---
 
-## Generated Outputs
+## 📁 Arquivos Gerados
 
-1. **PDF Report**: `output/PROFNIT_2027_Preliminary_Results_Report.pdf`
-2. **Chart PNG Images**:
+1. **Relatório em PDF**: `output/PROFNIT_2027_Preliminary_Results_Report.pdf`
+2. **Gráficos PNG**:
    - `output/charts/score_distribution.png`
    - `output/charts/cumulative_distribution.png`
    - `output/charts/regional_volume.png`
@@ -70,7 +70,7 @@ uv run profnit-stats -i data/ENA27-Resultado-Preliminar-Prova-Nacional.pdf -o ou
 
 ---
 
-## Project Structure
+## 🏗️ Estrutura do Projeto
 
 ```text
 estatisticas-profnit27/
@@ -81,11 +81,11 @@ estatisticas-profnit27/
 │   └── charts/
 ├── src/
 │   ├── __init__.py
-│   ├── parser.py          # PDF extraction module
-│   ├── analyzer.py        # Statistical calculations & CPF region mapping
-│   ├── charts.py          # Matplotlib/Seaborn plot generator
-│   ├── pdf_generator.py   # ReportLab Platypus PDF document builder
-│   └── main.py            # CLI entry point
+│   ├── parser.py          # Módulo de extração do PDF
+│   ├── analyzer.py        # Módulo de estatística e mapeamento de CPF
+│   ├── charts.py          # Módulo gerador de gráficos (Matplotlib/Seaborn)
+│   ├── pdf_generator.py   # Módulo construtor do PDF (ReportLab Platypus)
+│   └── main.py            # Ponto de entrada CLI
 ├── pyproject.toml
 └── README.md
 ```

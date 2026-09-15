@@ -97,25 +97,25 @@ class ChartGenerator:
             color="#EF4444",
             linestyle="--",
             linewidth=1.8,
-            label=f"Mean: {mean_val:.2f}",
+            label=f"Média: {mean_val:.2f}",
         )
         ax.axvline(
             median_val,
             color="#10B981",
             linestyle=":",
             linewidth=2.0,
-            label=f"Median: {median_val:.1f}",
+            label=f"Mediana: {median_val:.1f}",
         )
 
         ax.set_title(
-            "Candidate Score Distribution (Acertos out of 20)",
+            "Distribuição de Acertos dos Candidatos (de 0 a 20)",
             fontsize=13,
             fontweight="bold",
             pad=15,
             color="#0F172A",
         )
-        ax.set_xlabel("Number of Correct Answers (Score)", fontsize=10, fontweight="bold", labelpad=8)
-        ax.set_ylabel("Number of Candidates", fontsize=10, fontweight="bold", labelpad=8)
+        ax.set_xlabel("Número de Acertos (Nota)", fontsize=10, fontweight="bold", labelpad=8)
+        ax.set_ylabel("Quantidade de Candidatos", fontsize=10, fontweight="bold", labelpad=8)
         ax.set_xticks(scores)
         ax.set_ylim(0, max(counts) * 1.15)
         ax.grid(axis="y", linestyle=":", alpha=0.6)
@@ -152,7 +152,7 @@ class ChartGenerator:
             linewidth=2.2,
             markersize=5,
             markerfacecolor="#1D4ED8",
-            label="Cumulative % (Top-down)",
+            label="Percentual Acumulado (Topo -> Base)",
         )
 
         for s, pct in zip(scores, cum_pcts):
@@ -169,14 +169,14 @@ class ChartGenerator:
                 )
 
         ax.set_title(
-            "Cumulative Candidate Percentage by Minimum Score",
+            "Porcentagem Acumulada de Candidatos por Nota Mínima",
             fontsize=13,
             fontweight="bold",
             pad=15,
             color="#0F172A",
         )
-        ax.set_xlabel("Score Threshold (Minimum Score)", fontsize=10, fontweight="bold", labelpad=8)
-        ax.set_ylabel("Cumulative Percentage (%)", fontsize=10, fontweight="bold", labelpad=8)
+        ax.set_xlabel("Nota Mínima (Corte)", fontsize=10, fontweight="bold", labelpad=8)
+        ax.set_ylabel("Porcentagem Acumulada (%)", fontsize=10, fontweight="bold", labelpad=8)
         ax.set_xticks(range(0, 21))
         ax.set_ylim(0, 110)
         ax.grid(True, linestyle=":", alpha=0.6)
@@ -210,8 +210,8 @@ class ChartGenerator:
         x = np.arange(len(short_codes))
         width = 0.38
 
-        rects1 = ax.bar(x - width / 2, totals, width, label="Total Registered", color="#3B82F6")
-        rects2 = ax.bar(x + width / 2, perfects, width, label="Perfect Scores (20/20)", color="#10B981")
+        rects1 = ax.bar(x - width / 2, totals, width, label="Total de Inscritos", color="#3B82F6")
+        rects2 = ax.bar(x + width / 2, perfects, width, label="Gabaritou (20/20)", color="#10B981")
 
         for rect in rects1:
             h = rect.get_height()
@@ -239,14 +239,14 @@ class ChartGenerator:
             )
 
         ax.set_title(
-            "Candidate Volume & Perfect Scores by CPF Region",
+            "Volume de Candidatos e Notas Máximas por Região do CPF",
             fontsize=13,
             fontweight="bold",
             pad=15,
             color="#0F172A",
         )
-        ax.set_xlabel("CPF Region (States Code)", fontsize=10, fontweight="bold", labelpad=8)
-        ax.set_ylabel("Number of Candidates", fontsize=10, fontweight="bold", labelpad=8)
+        ax.set_xlabel("Região do CPF (Estados)", fontsize=10, fontweight="bold", labelpad=8)
+        ax.set_ylabel("Quantidade de Candidatos", fontsize=10, fontweight="bold", labelpad=8)
         ax.set_xticks(x)
         ax.set_xticklabels(short_codes, rotation=25, ha="right", fontsize=8.5)
         ax.set_ylim(0, max(totals) * 1.15)
@@ -277,7 +277,7 @@ class ChartGenerator:
 
         fig, ax = plt.subplots(figsize=(8.5, 4.2), dpi=300)
 
-        bars = ax.bar(short_codes, means, color="#6366F1", width=0.55, edgecolor="#3730A3")
+        bars = ax.bar(range(len(short_codes)), means, color="#6366F1", width=0.55, edgecolor="#3730A3")
 
         for bar, mean_val in zip(bars, means):
             ax.text(
@@ -298,18 +298,18 @@ class ChartGenerator:
             color="#EF4444",
             linestyle="--",
             linewidth=1.5,
-            label=f"National Average: {overall_mean:.2f}",
+            label=f"Média Nacional: {overall_mean:.2f}",
         )
 
         ax.set_title(
-            "Average Candidate Score by CPF Region",
+            "Média de Acertos por Região do CPF",
             fontsize=13,
             fontweight="bold",
             pad=15,
             color="#0F172A",
         )
-        ax.set_xlabel("CPF Region (States Code)", fontsize=10, fontweight="bold", labelpad=8)
-        ax.set_ylabel("Average Score (Out of 20)", fontsize=10, fontweight="bold", labelpad=8)
+        ax.set_xlabel("Região do CPF (Estados)", fontsize=10, fontweight="bold", labelpad=8)
+        ax.set_ylabel("Média de Acertos (de 0 a 20)", fontsize=10, fontweight="bold", labelpad=8)
         ax.set_xticks(range(len(short_codes)))
         ax.set_xticklabels(short_codes, rotation=25, ha="right", fontsize=8.5)
 
