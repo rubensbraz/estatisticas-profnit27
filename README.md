@@ -6,6 +6,14 @@ O código-fonte em Python é estruturado de forma limpa, com docstrings e type h
 
 ---
 
+## 📄 Visualizar o Relatório em PDF
+
+👉 **[Abrir o Relatório Executivo em PDF](https://github.com/rubensbraz/estatisticas-profnit27/blob/main/output/PROFNIT_2027_Preliminary_Results_Report.pdf)**
+
+O GitHub exibe o PDF diretamente no navegador ao abrir o link acima — não é necessário clonar o repositório ou navegar pela pasta `output/`.
+
+---
+
 ## 🚀 Principais Funcionalidades
 
 - **Extração de Dados em PDF**: Leitura e parsing de nomes, CPFs mascarados, presenças e notas de 1.845 candidatos ao longo de 57 páginas.
@@ -61,12 +69,12 @@ uv run profnit-stats -i data/ENA27-Resultado-Preliminar-Prova-Nacional.pdf -o ou
 
 ## 📁 Arquivos Gerados
 
-1. **Relatório em PDF**: `output/PROFNIT_2027_Preliminary_Results_Report.pdf`
+1. **Relatório em PDF**: [`output/PROFNIT_2027_Preliminary_Results_Report.pdf`](https://github.com/rubensbraz/estatisticas-profnit27/blob/main/output/PROFNIT_2027_Preliminary_Results_Report.pdf)
 2. **Gráficos PNG**:
-   - `output/charts/score_distribution.png`
-   - `output/charts/cumulative_distribution.png`
-   - `output/charts/regional_volume.png`
-   - `output/charts/regional_means.png`
+   - [`output/charts/score_distribution.png`](https://github.com/rubensbraz/estatisticas-profnit27/blob/main/output/charts/score_distribution.png)
+   - [`output/charts/cumulative_distribution.png`](https://github.com/rubensbraz/estatisticas-profnit27/blob/main/output/charts/cumulative_distribution.png)
+   - [`output/charts/regional_volume.png`](https://github.com/rubensbraz/estatisticas-profnit27/blob/main/output/charts/regional_volume.png)
+   - [`output/charts/regional_means.png`](https://github.com/rubensbraz/estatisticas-profnit27/blob/main/output/charts/regional_means.png)
 
 ---
 
